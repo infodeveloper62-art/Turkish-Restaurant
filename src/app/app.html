@@ -1,0 +1,2000 @@
+<!-- TURKISH RESTAURANT - Main Application Template -->
+
+<div id="restaurant-app" class="min-h-screen bg-[#0f0c0a] text-[#f4efe6] selection:bg-[#d4af37] selection:text-[#0f0c0a] relative overflow-x-hidden">
+
+  <!-- 1. HEADER / NAVBAR -->
+  <header
+    id="main-navbar"
+    [class]="headerClass()"
+  >
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Restaurant Logo / Brand -->
+      <a
+        id="navbar-brand-logo"
+        role="button"
+        tabindex="0"
+        (click)="scrollToSection('hero')"
+        (keydown.enter)="scrollToSection('hero')"
+        class="flex items-center gap-3 cursor-pointer group"
+      >
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#d4af37] to-[#997922] p-[1.5px] flex items-center justify-center shadow-lg group-hover:rotate-6 transition-transform">
+          <div class="w-full h-full rounded-full bg-[#0f0c0a] flex items-center justify-center">
+            <mat-icon class="text-[#d4af37] text-2xl">outdoor_grill</mat-icon>
+          </div>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-serif tracking-widest text-lg sm:text-xl font-bold text-white group-hover:text-[#d4af37] transition-colors leading-tight">
+            TURKISH RESTAURANT
+          </span>
+          <span class="text-[10px] tracking-[0.25em] text-[#d4af37] uppercase font-semibold">
+            Authentic Ottoman Flavors
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav id="desktop-nav-menu" class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
+        <button
+          id="nav-link-home"
+          type="button"
+          (click)="scrollToSection('hero')"
+          [class]="getNavLinkClass('hero')"
+        >
+          Home
+          @if (activeSection() === 'hero') {
+            <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#d4af37] rounded-full"></span>
+          }
+        </button>
+
+        <button
+          id="nav-link-about"
+          type="button"
+          (click)="scrollToSection('about')"
+          [class]="getNavLinkClass('about')"
+        >
+          About
+          @if (activeSection() === 'about') {
+            <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#d4af37] rounded-full"></span>
+          }
+        </button>
+
+        <button
+          id="nav-link-menu"
+          type="button"
+          (click)="scrollToSection('menu')"
+          [class]="getNavLinkClass('menu')"
+        >
+          Menu
+          @if (activeSection() === 'menu' || activeSection() === 'special') {
+            <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#d4af37] rounded-full"></span>
+          }
+        </button>
+
+        <button
+          id="nav-link-gallery"
+          type="button"
+          (click)="scrollToSection('gallery')"
+          [class]="getNavLinkClass('gallery')"
+        >
+          Gallery
+          @if (activeSection() === 'gallery') {
+            <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#d4af37] rounded-full"></span>
+          }
+        </button>
+
+        <button
+          id="nav-link-reviews"
+          type="button"
+          (click)="scrollToSection('reviews')"
+          [class]="getNavLinkClass('reviews')"
+        >
+          Reviews
+          @if (activeSection() === 'reviews') {
+            <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#d4af37] rounded-full"></span>
+          }
+        </button>
+
+        <button
+          id="nav-link-contact"
+          type="button"
+          (click)="scrollToSection('contact')"
+          [class]="getNavLinkClass('contact')"
+        >
+          Contact
+          @if (activeSection() === 'contact') {
+            <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#d4af37] rounded-full"></span>
+          }
+        </button>
+      </nav>
+
+      <!-- Header Action Buttons -->
+      <div class="hidden lg:flex items-center gap-4">
+        <!-- Cart Drawer Button if items exist -->
+        @if (cartTotalCount() > 0) {
+          <button
+            id="nav-cart-btn"
+            type="button"
+            (click)="toggleCartDrawer()"
+            class="relative p-2.5 rounded-full bg-[#1e1916] border border-[#d4af37]/40 text-[#d4af37] hover:bg-[#d4af37] hover:text-[#0f0c0a] transition-all cursor-pointer flex items-center justify-center"
+            title="View Order Cart"
+          >
+            <mat-icon>shopping_bag</mat-icon>
+            <span class="absolute -top-1.5 -right-1.5 bg-[#d4af37] text-[#0f0c0a] font-bold text-xs rounded-full w-5 h-5 flex items-center justify-center border-2 border-[#0f0c0a]">
+              {{ cartTotalCount() }}
+            </span>
+          </button>
+        }
+
+        <!-- Prominent "Book a Table" button -->
+        <button
+          id="nav-book-table-btn"
+          type="button"
+          (click)="scrollToSection('reservation')"
+          class="btn-gold px-6 py-2.5 rounded-full text-sm font-semibold tracking-wider uppercase cursor-pointer flex items-center gap-2 shadow-lg"
+        >
+          <mat-icon class="text-lg">table_restaurant</mat-icon>
+          Book a Table
+        </button>
+      </div>
+
+      <!-- Mobile Hamburger and Cart -->
+      <div class="flex items-center gap-3 md:hidden">
+        @if (cartTotalCount() > 0) {
+          <button
+            id="mobile-nav-cart-btn"
+            type="button"
+            (click)="toggleCartDrawer()"
+            class="relative p-2 rounded-lg bg-[#1e1916] border border-[#d4af37]/30 text-[#d4af37]"
+          >
+            <mat-icon class="text-xl">shopping_bag</mat-icon>
+            <span class="absolute -top-1 -right-1 bg-[#d4af37] text-[#0f0c0a] font-bold text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+              {{ cartTotalCount() }}
+            </span>
+          </button>
+        }
+
+        <button
+          id="mobile-hamburger-btn"
+          type="button"
+          (click)="toggleMobileMenu()"
+          class="p-2 text-[#f4efe6] hover:text-[#d4af37] focus:outline-none cursor-pointer transition-colors"
+          aria-label="Toggle Navigation Menu"
+        >
+          <mat-icon class="text-3xl">{{ mobileMenuOpen() ? 'close' : 'menu' }}</mat-icon>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Drawer Menu -->
+    @if (mobileMenuOpen()) {
+      <div
+        id="mobile-nav-drawer"
+        class="md:hidden bg-[#14100e] border-b border-[#d4af37]/30 px-6 py-6 space-y-4 shadow-2xl transition-all"
+      >
+        <div class="flex flex-col gap-3 font-medium text-base">
+          <button
+            id="mobile-link-home"
+            type="button"
+            (click)="scrollToSection('hero')"
+            class="flex items-center gap-3 py-2 text-left hover:text-[#d4af37] transition-colors"
+          >
+            <mat-icon class="text-[#d4af37] text-lg">home</mat-icon>
+            Home
+          </button>
+          <button
+            id="mobile-link-about"
+            type="button"
+            (click)="scrollToSection('about')"
+            class="flex items-center gap-3 py-2 text-left hover:text-[#d4af37] transition-colors"
+          >
+            <mat-icon class="text-[#d4af37] text-lg">info</mat-icon>
+            About
+          </button>
+          <button
+            id="mobile-link-menu"
+            type="button"
+            (click)="scrollToSection('menu')"
+            class="flex items-center gap-3 py-2 text-left hover:text-[#d4af37] transition-colors"
+          >
+            <mat-icon class="text-[#d4af37] text-lg">restaurant_menu</mat-icon>
+            Menu
+          </button>
+          <button
+            id="mobile-link-gallery"
+            type="button"
+            (click)="scrollToSection('gallery')"
+            class="flex items-center gap-3 py-2 text-left hover:text-[#d4af37] transition-colors"
+          >
+            <mat-icon class="text-[#d4af37] text-lg">photo_library</mat-icon>
+            Gallery
+          </button>
+          <button
+            id="mobile-link-reviews"
+            type="button"
+            (click)="scrollToSection('reviews')"
+            class="flex items-center gap-3 py-2 text-left hover:text-[#d4af37] transition-colors"
+          >
+            <mat-icon class="text-[#d4af37] text-lg">star</mat-icon>
+            Reviews
+          </button>
+          <button
+            id="mobile-link-contact"
+            type="button"
+            (click)="scrollToSection('contact')"
+            class="flex items-center gap-3 py-2 text-left hover:text-[#d4af37] transition-colors"
+          >
+            <mat-icon class="text-[#d4af37] text-lg">place</mat-icon>
+            Contact
+          </button>
+        </div>
+
+        <div class="pt-4 border-t border-[#332b26] flex flex-col gap-3">
+          <button
+            id="mobile-book-table-btn"
+            type="button"
+            (click)="scrollToSection('reservation')"
+            class="btn-gold w-full py-3 rounded-xl font-semibold tracking-wider uppercase flex items-center justify-center gap-2 shadow-lg"
+          >
+            <mat-icon>table_restaurant</mat-icon>
+            Book a Table
+          </button>
+
+          <a
+            id="mobile-quick-call-btn"
+            href="tel:+92418765432"
+            class="btn-outline-gold w-full py-2.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2"
+          >
+            <mat-icon>phone</mat-icon>
+            Call: +92 (41) 876-5432
+          </a>
+        </div>
+      </div>
+    }
+  </header>
+
+
+  <!-- 2. HERO SECTION -->
+  <section
+    id="hero"
+    class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-cover bg-center overflow-hidden"
+    style="background-image: url('/assets/images/turkish_hero_feast_1790096845716.jpg');"
+  >
+    <!-- Dark overlay over background image so text is easy to read -->
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0f0c0a] via-[#0f0c0a]/85 to-[#0f0c0a]/75 backdrop-blur-[2px]"></div>
+
+    <!-- Decorative background glow and accents -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#d4af37]/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto text-center space-y-8">
+      
+      <!-- Authentic Turkish Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1e1916]/80 border border-[#d4af37]/40 text-[#d4af37] text-xs sm:text-sm font-semibold tracking-widest uppercase shadow-md">
+        <mat-icon class="text-base text-[#d4af37]">local_fire_department</mat-icon>
+        <span>Authentic Anatolian Charcoal Grilling</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-[#d4af37]"></span>
+        <span>100% Halal</span>
+      </div>
+
+      <!-- Large Attractive Heading -->
+      <div class="space-y-3">
+        <span class="inline-block text-xs sm:text-sm font-semibold tracking-[0.25em] text-[#d4af37] uppercase">
+          Taste the Difference
+        </span>
+        <h1 class="text-4xl sm:text-6xl md:text-7xl font-serif font-bold text-white tracking-tight leading-[1.1] drop-shadow-lg">
+          Authentic Turkish Taste in <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#f4efe6] via-[#d4af37] to-[#e6c054]">Faisalabad</span>
+        </h1>
+      </div>
+
+      <!-- Short Description about fresh, delicious and high-quality food -->
+      <p class="text-base sm:text-lg text-[#dcd6cc] max-w-2xl mx-auto font-light leading-relaxed">
+        Experience centuries of authentic Ottoman culinary passion right here in Nishatabad, Faisalabad. Savor fresh, delicious, and premium quality charcoal-grilled Adana kebabs, wood-fired Turkish pide, crispy lahmacun, and golden pistachio baklava prepared by master Turkish chefs.
+      </p>
+
+      <!-- Two Hero Buttons: “View Menu” & “Book a Table” -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+        <button
+          id="hero-btn-view-menu"
+          type="button"
+          (click)="scrollToSection('menu')"
+          class="btn-gold w-full sm:w-auto px-8 py-3.5 rounded-full text-base font-semibold tracking-wide uppercase cursor-pointer flex items-center justify-center gap-2 shadow-xl"
+        >
+          <mat-icon>restaurant_menu</mat-icon>
+          View Menu
+        </button>
+
+        <button
+          id="hero-btn-book-table"
+          type="button"
+          (click)="scrollToSection('reservation')"
+          class="btn-outline-gold w-full sm:w-auto px-8 py-3.5 rounded-full text-base font-semibold tracking-wide uppercase cursor-pointer flex items-center justify-center gap-2 shadow-xl"
+        >
+          <mat-icon>table_restaurant</mat-icon>
+          Book a Table
+        </button>
+      </div>
+
+      <!-- Quick Trust Indicators Banner -->
+      <div class="pt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center border-t border-[#332b26]/70 mt-12 max-w-3xl mx-auto">
+        <div class="p-3">
+          <div class="text-2xl font-bold text-[#d4af37] font-serif">4.9 ★</div>
+          <div class="text-xs text-[#a89f91] uppercase tracking-wider mt-1">2,400+ Reviews</div>
+        </div>
+        <div class="p-3">
+          <div class="text-2xl font-bold text-[#d4af37] font-serif">100%</div>
+          <div class="text-xs text-[#a89f91] uppercase tracking-wider mt-1">Natural Charcoal</div>
+        </div>
+        <div class="p-3">
+          <div class="text-2xl font-bold text-[#d4af37] font-serif">Fresh</div>
+          <div class="text-xs text-[#a89f91] uppercase tracking-wider mt-1">Daily Farm Meat</div>
+        </div>
+        <div class="p-3">
+          <div class="text-2xl font-bold text-[#d4af37] font-serif">1:30 AM</div>
+          <div class="text-xs text-[#a89f91] uppercase tracking-wider mt-1">Open Every Night</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- 3. ABOUT SECTION -->
+  <section id="about" class="py-24 px-4 sm:px-6 lg:px-8 bg-[#14100e] relative">
+    <div class="max-w-7xl mx-auto">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        
+        <!-- Left Column: Restaurant Photography & Badges -->
+        <div class="lg:col-span-6 relative">
+          <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-[#d4af37]/20 group">
+            <img
+              id="about-main-image"
+              src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80"
+              alt="Authentic Turkish restaurant dining hall and grill"
+              class="w-full h-[450px] sm:h-[520px] object-cover group-hover:scale-105 transition-transform duration-700"
+              referrerpolicy="no-referrer"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0f0c0a]/80 via-transparent to-transparent"></div>
+            
+            <!-- Floating Experience Badge -->
+            <div class="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-[#0f0c0a]/90 backdrop-blur-md border border-[#d4af37]/30 flex items-center gap-4 shadow-xl">
+              <div class="w-14 h-14 rounded-full bg-[#d4af37] text-[#0f0c0a] flex items-center justify-center font-bold text-xl font-serif shrink-0">
+                14+
+              </div>
+              <div>
+                <h4 class="font-bold text-white text-sm">Years of Culinary Heritage</h4>
+                <p class="text-xs text-[#a89f91]">Crafting authentic Ottoman and Anatolian banquet delicacies in Pakistan.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Decorative Ottoman Geometric Border Accent -->
+          <div class="absolute -top-4 -left-4 w-24 h-24 border-t-2 border-l-2 border-[#d4af37] rounded-tl-xl pointer-events-none"></div>
+          <div class="absolute -bottom-4 -right-4 w-24 h-24 border-b-2 border-r-2 border-[#d4af37] rounded-br-xl pointer-events-none"></div>
+        </div>
+
+        <!-- Right Column: Story & Details -->
+        <div class="lg:col-span-6 space-y-6">
+          <div class="inline-flex items-center gap-2 text-[#d4af37] text-sm uppercase tracking-widest font-semibold">
+            <span class="w-8 h-[1px] bg-[#d4af37]"></span>
+            <span>Our Heritage</span>
+          </div>
+
+          <!-- Heading: “Welcome to TURKISH RESTAURANT” -->
+          <h2 class="text-3xl sm:text-5xl font-serif font-bold text-white tracking-tight leading-tight">
+            Welcome to <br />
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#d4af37] to-[#f4efe6]">
+              TURKISH RESTAURANT
+            </span>
+          </h2>
+
+          <!-- Professional Description -->
+          <p class="text-base sm:text-lg text-[#dcd6cc] font-light leading-relaxed">
+            Rooted in the timeless banquet culture of Istanbul and Gaziantep, Turkish Restaurant offers an unparalleled fine dining experience in Nishatabad, Faisalabad. We combine genuine charcoal-fired Mangal grilling techniques with the warmest Turkish hospitality.
+          </p>
+          <p class="text-sm sm:text-base text-[#a89f91] font-light leading-relaxed">
+            Our master grill ustas select only the finest cuts of 100% Halal grass-fed mutton and chicken, seasoned with authentic Aleppo peppers, wild sumac, and oregano. Every dish—from our fragrant slow-simmered stews to our crispy stone-baked pide—is a tribute to the rich gastronomy of Anatolia.
+          </p>
+
+          <!-- Core Pillars (2-column on mobile/tablet) -->
+          <div class="grid grid-cols-2 gap-3 sm:gap-4 pt-2">
+            <div class="flex flex-col sm:flex-row items-start gap-2 sm:gap-3 p-3 sm:p-3.5 rounded-xl bg-[#1e1916] border border-[#332b26]">
+              <mat-icon class="text-[#d4af37] text-lg sm:text-2xl mt-0.5">outdoor_grill</mat-icon>
+              <div>
+                <h4 class="font-semibold text-white text-xs sm:text-sm">Oak Charcoal Grilling</h4>
+                <p class="text-[11px] sm:text-xs text-[#a89f91] mt-0.5">Pure natural smoky embers.</p>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-start gap-2 sm:gap-3 p-3 sm:p-3.5 rounded-xl bg-[#1e1916] border border-[#332b26]">
+              <mat-icon class="text-[#d4af37] text-lg sm:text-2xl mt-0.5">verified</mat-icon>
+              <div>
+                <h4 class="font-semibold text-white text-xs sm:text-sm">Imported Spices</h4>
+                <p class="text-[11px] sm:text-xs text-[#a89f91] mt-0.5">Direct from Gaziantep & Urfa.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- “Discover More” button -->
+          <div class="pt-4 flex items-center gap-4">
+            <button
+              id="about-discover-more-btn"
+              type="button"
+              (click)="openStoryModal()"
+              class="btn-gold px-8 py-3 rounded-full text-sm font-semibold tracking-wide uppercase cursor-pointer flex items-center gap-2 shadow-lg"
+            >
+              <mat-icon>menu_book</mat-icon>
+              Discover More
+            </button>
+
+            <button
+              id="about-menu-quick-btn"
+              type="button"
+              (click)="scrollToSection('menu')"
+              class="btn-outline-gold px-6 py-3 rounded-full text-sm font-semibold tracking-wide uppercase cursor-pointer flex items-center gap-2"
+            >
+              <mat-icon>restaurant</mat-icon>
+              Our Dishes
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- 4. SPECIAL / POPULAR DISHES -->
+  <section id="special" class="py-24 px-4 sm:px-6 lg:px-8 bg-[#0f0c0a] relative">
+    <div class="max-w-7xl mx-auto space-y-12">
+      
+      <!-- Section Header -->
+      <div class="text-center space-y-4 max-w-2xl mx-auto">
+        <div class="inline-flex items-center gap-2 text-[#d4af37] text-sm uppercase tracking-widest font-semibold">
+          <span class="w-6 h-[1px] bg-[#d4af37]"></span>
+          <span>Chef's Masterpieces</span>
+          <span class="w-6 h-[1px] bg-[#d4af37]"></span>
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-serif font-bold text-white tracking-tight">
+          Special & Popular Dishes
+        </h2>
+        <p class="text-sm sm:text-base text-[#a89f91]">
+          Our most beloved culinary creations, perfected over open embers and stone ovens to deliver unforgettable authentic Turkish flavors.
+        </p>
+      </div>
+
+      <!-- 6 Food Cards Grid with Hover Animation (2 columns on mobile/tablet matching tablet preview) -->
+      <div class="grid grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-6 lg:gap-8">
+        @for (dish of specialDishes(); track dish.id) {
+          <div
+            [id]="'special-card-' + dish.id"
+            class="group bg-[#171311] rounded-xl sm:rounded-2xl overflow-hidden border border-[#332b26] hover:border-[#d4af37]/60 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_35px_-10px_rgba(212,175,55,0.15)] flex flex-col justify-between"
+          >
+            <!-- Card Image Container -->
+            <div class="relative h-36 xs:h-44 sm:h-52 md:h-60 w-full overflow-hidden bg-[#211c19]">
+              <img
+                [src]="dish.image"
+                [alt]="dish.name"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                referrerpolicy="no-referrer"
+                (error)="onImageError($event)"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#171311] via-transparent to-transparent opacity-80"></div>
+              
+              <!-- Badges -->
+              <div class="absolute top-2 left-2 sm:top-4 sm:left-4 flex flex-wrap gap-1 sm:gap-2">
+                @if (dish.isChefSpecial) {
+                  <span class="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-[11px] font-bold bg-[#d4af37] text-[#0f0c0a] uppercase tracking-wider shadow-md">
+                    Chef's Choice
+                  </span>
+                }
+                @if (dish.isSpicy) {
+                  <span class="px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[9px] sm:text-[11px] font-bold bg-red-600/90 text-white uppercase tracking-wider shadow-md flex items-center gap-0.5 sm:gap-1">
+                    <mat-icon class="text-[10px] sm:text-xs">whatshot</mat-icon> Spicy
+                  </span>
+                }
+                @if (dish.isVegetarian) {
+                  <span class="px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[9px] sm:text-[11px] font-bold bg-emerald-600/90 text-white uppercase tracking-wider shadow-md flex items-center gap-0.5 sm:gap-1">
+                    <mat-icon class="text-[10px] sm:text-xs">spa</mat-icon> Veg
+                  </span>
+                }
+              </div>
+
+              <!-- Price Tag Ribbon -->
+              <div class="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 bg-[#0f0c0a]/90 backdrop-blur-md px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-md sm:rounded-lg border border-[#d4af37]/40 text-[#d4af37] font-bold text-xs sm:text-base font-serif shadow-lg whitespace-nowrap">
+                PKR {{ dish.price.toLocaleString() }}
+              </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="p-3 sm:p-5 md:p-6 flex flex-col flex-grow justify-between space-y-3 sm:space-y-4">
+              <div class="space-y-1 sm:space-y-2">
+                <div class="flex items-baseline justify-between">
+                  <h3 class="text-sm sm:text-lg md:text-xl font-serif font-bold text-white group-hover:text-[#d4af37] transition-colors leading-snug line-clamp-1 sm:line-clamp-none">
+                    {{ dish.name }}
+                  </h3>
+                </div>
+                @if (dish.turkishName) {
+                  <div class="text-[10px] sm:text-xs text-[#d4af37] font-medium tracking-wide line-clamp-1">
+                    {{ dish.turkishName }}
+                  </div>
+                }
+                <p class="text-[11px] sm:text-sm text-[#a89f91] line-clamp-2 sm:line-clamp-3 leading-relaxed font-light">
+                  {{ dish.description }}
+                </p>
+              </div>
+
+              <!-- Action: “Order Now” button -->
+              <div class="pt-2.5 sm:pt-4 border-t border-[#332b26]/70 flex flex-col xs:flex-row sm:flex-row items-start xs:items-center justify-between gap-2">
+                <span class="text-[10px] sm:text-xs text-[#a89f91] flex items-center gap-1 shrink-0">
+                  <mat-icon class="text-xs sm:text-sm text-[#d4af37]">schedule</mat-icon>
+                  {{ dish.preparationTime || '15-20 mins' }}
+                </span>
+
+                <button
+                  [id]="'order-now-btn-' + dish.id"
+                  type="button"
+                  (click)="openQuickOrder(dish)"
+                  class="btn-gold w-full xs:w-auto px-2.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs font-semibold tracking-wider uppercase cursor-pointer flex items-center justify-center gap-1 sm:gap-1.5 shadow-md whitespace-nowrap"
+                >
+                  <mat-icon class="text-xs sm:text-sm">shopping_bag</mat-icon>
+                  <span>Order Now</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Bottom Banner -->
+      <div class="text-center pt-4">
+        <button
+          id="special-explore-all-menu-btn"
+          type="button"
+          (click)="scrollToSection('menu')"
+          class="btn-outline-gold px-8 py-3 rounded-full text-sm font-semibold tracking-wider uppercase cursor-pointer inline-flex items-center gap-2"
+        >
+          <mat-icon>menu_book</mat-icon>
+          Explore Complete Menu (30+ Items)
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- 5. MENU SECTION -->
+  <section id="menu" class="py-24 px-4 sm:px-6 lg:px-8 bg-[#14100e] relative">
+    <div class="max-w-7xl mx-auto space-y-12">
+      
+      <!-- Section Header -->
+      <div class="text-center space-y-4 max-w-2xl mx-auto">
+        <div class="inline-flex items-center gap-2 text-[#d4af37] text-sm uppercase tracking-widest font-semibold">
+          <span class="w-6 h-[1px] bg-[#d4af37]"></span>
+          <span>Culinary Offerings</span>
+          <span class="w-6 h-[1px] bg-[#d4af37]"></span>
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-serif font-bold text-white tracking-tight">
+          Explore Our Menu
+        </h2>
+        <p class="text-sm sm:text-base text-[#a89f91]">
+          Carefully curated categories featuring traditional Anatolian appetizers, sizzling skewers, stone-baked pides, handmade burgers, and decadent desserts.
+        </p>
+      </div>
+
+      <!-- Categories & Search Filter Bar -->
+      <div class="space-y-6">
+        
+        <!-- Category Buttons: Starters, Main Course, Burgers, Pizza, Desserts, Drinks -->
+        <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+          @for (cat of categories; track cat.id) {
+            <button
+              [id]="'menu-cat-' + cat.id"
+              type="button"
+              (click)="setCategory(cat.id)"
+              [class]="getCategoryButtonClass(cat.id)"
+            >
+              <mat-icon class="text-base">{{ cat.icon }}</mat-icon>
+              <span>{{ cat.label }}</span>
+            </button>
+          }
+        </div>
+
+        <!-- Search Input -->
+        <div class="max-w-md mx-auto relative">
+          <mat-icon class="absolute left-4 top-1/2 -translate-y-1/2 text-[#a89f91] text-lg">search</mat-icon>
+          <input
+            id="menu-search-input"
+            type="text"
+            placeholder="Search kebab, pide, baklava, burger..."
+            [value]="menuSearchQuery()"
+            (input)="updateSearch($event)"
+            class="w-full bg-[#1e1916] border border-[#332b26] focus:border-[#d4af37] text-white pl-11 pr-4 py-3 rounded-full text-sm placeholder-[#6b6257] outline-none transition-colors"
+          />
+          @if (menuSearchQuery()) {
+            <button
+              id="clear-search-btn"
+              type="button"
+              (click)="menuSearchQuery.set('')"
+              class="absolute right-4 top-1/2 -translate-y-1/2 text-[#a89f91] hover:text-white"
+            >
+              <mat-icon class="text-sm">close</mat-icon>
+            </button>
+          }
+        </div>
+
+      </div>
+
+      <!-- Menu Items Display Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+        @for (item of filteredMenuItems(); track item.id) {
+          <div
+            [id]="'menu-item-' + item.id"
+            class="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-[#1a1614] border border-[#332b26] hover:border-[#d4af37]/40 transition-all duration-300 hover:shadow-lg flex flex-row gap-3.5 sm:gap-5 items-center justify-between group"
+          >
+            <!-- Thumbnail Image -->
+            <div class="w-20 h-20 sm:w-28 sm:h-28 rounded-xl overflow-hidden shrink-0 bg-[#211c19] relative">
+              <img
+                [src]="item.image"
+                [alt]="item.name"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                referrerpolicy="no-referrer"
+                (error)="onImageError($event)"
+              />
+              @if (item.isPopular) {
+                <div class="absolute top-1 left-1 bg-[#d4af37] text-[#0f0c0a] font-bold text-[8px] sm:text-[9px] px-1 sm:px-1.5 py-0.5 rounded uppercase">
+                  Top
+                </div>
+              }
+            </div>
+
+            <!-- Details -->
+            <div class="flex-grow min-w-0 space-y-1 sm:space-y-1.5">
+              <div class="flex flex-wrap items-baseline justify-between gap-1">
+                <h4 class="font-serif text-sm sm:text-lg font-bold text-white group-hover:text-[#d4af37] transition-colors line-clamp-1">
+                  {{ item.name }}
+                </h4>
+                <span class="text-[#d4af37] font-bold font-serif text-sm sm:text-base whitespace-nowrap">
+                  PKR {{ item.price.toLocaleString() }}
+                </span>
+              </div>
+
+              @if (item.turkishName) {
+                <span class="text-[10px] sm:text-xs text-[#d4af37] font-medium tracking-wider block line-clamp-1">
+                  {{ item.turkishName }}
+                </span>
+              }
+
+              <p class="text-[11px] sm:text-xs text-[#a89f91] font-light leading-relaxed line-clamp-2">
+                {{ item.description }}
+              </p>
+
+              <!-- Tags -->
+              <div class="flex items-center gap-2 pt-0.5 text-[9px] sm:text-[10px] text-[#a89f91]">
+                @if (item.isChefSpecial) {
+                  <span class="text-[#d4af37] font-semibold">★ Signature</span>
+                }
+                @if (item.isVegetarian) {
+                  <span class="text-emerald-400">● Veg</span>
+                }
+                @if (item.isSpicy) {
+                  <span class="text-red-400">● Spicy</span>
+                }
+              </div>
+            </div>
+
+            <!-- Add to Order Button -->
+            <div class="shrink-0 flex items-center justify-end pl-1">
+              <button
+                [id]="'menu-add-btn-' + item.id"
+                type="button"
+                (click)="openQuickOrder(item)"
+                class="btn-gold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer shadow whitespace-nowrap"
+              >
+                <mat-icon class="text-xs sm:text-sm">add</mat-icon>
+                <span>Add</span>
+              </button>
+            </div>
+
+          </div>
+        }
+        @empty {
+          <div class="col-span-full py-16 text-center text-[#a89f91] space-y-3">
+            <mat-icon class="text-5xl text-[#d4af37]/40">search_off</mat-icon>
+            <p class="text-base text-white">No dishes found matching your search.</p>
+            <button
+              id="reset-search-btn"
+              type="button"
+              (click)="menuSearchQuery.set(''); selectedCategory.set('all')"
+              class="btn-outline-gold px-6 py-2 rounded-full text-xs font-semibold tracking-wider uppercase"
+            >
+              Reset Filters
+            </button>
+          </div>
+        }
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- 6. WHY CHOOSE US -->
+  <section id="why-us" class="py-24 px-4 sm:px-6 lg:px-8 bg-[#0f0c0a] relative">
+    <div class="max-w-7xl mx-auto space-y-16">
+      
+      <!-- Section Header -->
+      <div class="text-center space-y-4 max-w-2xl mx-auto">
+        <div class="inline-flex items-center gap-2 text-[#d4af37] text-sm uppercase tracking-widest font-semibold">
+          <span class="w-6 h-[1px] bg-[#d4af37]"></span>
+          <span>Excellence & Distinction</span>
+          <span class="w-6 h-[1px] bg-[#d4af37]"></span>
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-serif font-bold text-white tracking-tight">
+          Why Choose Us
+        </h2>
+        <p class="text-sm sm:text-base text-[#a89f91]">
+          Every plate we serve is a testament to our steadfast dedication to authentic craftsmanship, impeccable hospitality, and superior ingredient quality.
+        </p>
+      </div>
+
+      <!-- 4 Feature Cards with Simple Modern Icons (2-col on mobile/tablet) -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6 lg:gap-8">
+        @for (feature of features(); track feature.id) {
+          <div
+            [id]="'feature-card-' + feature.id"
+            class="p-4 sm:p-8 rounded-xl sm:rounded-2xl bg-[#171311] border border-[#332b26] hover:border-[#d4af37]/60 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_15px_30px_-10px_rgba(212,175,55,0.15)] flex flex-col items-center text-center space-y-2.5 sm:space-y-4 group"
+          >
+            <!-- Modern Icon Container -->
+            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-[#d4af37]/20 to-[#1e1916] border border-[#d4af37]/40 flex items-center justify-center text-[#d4af37] group-hover:scale-110 group-hover:bg-[#d4af37] group-hover:text-[#0f0c0a] transition-all duration-300 shadow-lg">
+              <mat-icon class="text-2xl sm:text-3xl">{{ feature.icon }}</mat-icon>
+            </div>
+
+            <!-- Title -->
+            <h3 class="text-sm sm:text-xl font-serif font-bold text-white group-hover:text-[#d4af37] transition-colors">
+              {{ feature.title }}
+            </h3>
+
+            <!-- Description -->
+            <p class="text-xs sm:text-sm text-[#a89f91] font-light leading-relaxed line-clamp-3 sm:line-clamp-none">
+              {{ feature.description }}
+            </p>
+          </div>
+        }
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- 7. GALLERY -->
+  <section id="gallery" class="py-24 px-4 sm:px-6 lg:px-8 bg-[#14100e] relative">
+    <div class="max-w-7xl mx-auto space-y-12">
+      
+      <!-- Section Header -->
+      <div class="text-center space-y-4 max-w-2xl mx-auto">
+        <div class="inline-flex items-center gap-2 text-[#d4af37] text-sm uppercase tracking-widest font-semibold">
+          <span class="w-6 h-[1px] bg-[#d4af37]"></span>
+          <span>Visual Feast</span>
+          <span class="w-6 h-[1px] bg-[#d4af37]"></span>
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-serif font-bold text-white tracking-tight">
+          Food & Ambiance Gallery
+        </h2>
+        <p class="text-sm sm:text-base text-[#a89f91]">
+          A glimpse into our kitchen's fiery passion, mouthwatering Turkish specialties, and luxurious Ottoman hospitality.
+        </p>
+      </div>
+
+      <!-- 8 Images Grid with Modern Layout & Subtle Zoom Effect (2-col on mobile/tablet) -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+        @for (item of galleryItems(); track item.id; let idx = $index) {
+          <button
+            type="button"
+            [id]="'gallery-item-' + item.id"
+            (click)="openLightbox(item)"
+            class="group relative h-44 sm:h-72 rounded-xl sm:rounded-2xl overflow-hidden bg-[#211c19] border border-[#332b26] cursor-pointer shadow-md hover:border-[#d4af37]/60 hover:shadow-2xl transition-all duration-500 text-left p-0 block w-full"
+          >
+            <img
+              [src]="item.imageUrl"
+              [alt]="item.title"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+              referrerpolicy="no-referrer"
+            />
+            
+            <!-- Dark Overlay with Zoom / Caption on Hover -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0f0c0a]/90 via-[#0f0c0a]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3 sm:p-5">
+              <span class="text-[10px] sm:text-[11px] text-[#d4af37] uppercase tracking-widest font-semibold mb-0.5 sm:mb-1">
+                {{ item.category }}
+              </span>
+              <h4 class="font-serif text-sm sm:text-lg font-bold text-white leading-tight mb-1 sm:mb-2 line-clamp-1">
+                {{ item.title }}
+              </h4>
+              <div class="flex items-center gap-1 text-[10px] sm:text-xs text-[#dcd6cc] font-light">
+                <mat-icon class="text-xs sm:text-sm text-[#d4af37]">zoom_in</mat-icon>
+                <span>Click to expand</span>
+              </div>
+            </div>
+
+            <!-- Subtle permanent corner badge -->
+            <div class="absolute top-2 right-2 sm:top-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#0f0c0a]/70 backdrop-blur-sm border border-[#d4af37]/30 flex items-center justify-center text-[#d4af37] opacity-80 group-hover:opacity-100 transition-opacity">
+              <mat-icon class="text-sm sm:text-base">fullscreen</mat-icon>
+            </div>
+          </button>
+        }
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- 8. CUSTOMER REVIEWS -->
+  <section id="reviews" class="py-24 px-4 sm:px-6 lg:px-8 bg-[#0f0c0a] relative">
+    <div class="max-w-7xl mx-auto space-y-16">
+      
+      <!-- Section Header -->
+      <div class="text-center space-y-4 max-w-2xl mx-auto">
+        <div class="inline-flex items-center gap-2 text-[#d4af37] text-sm uppercase tracking-widest font-semibold">
+          <span class="w-6 h-[1px] bg-[#d4af37]"></span>
+          <span>Diner Testimonials</span>
+          <span class="w-6 h-[1px] bg-[#d4af37]"></span>
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-serif font-bold text-white tracking-tight">
+          What Our Guests Say
+        </h2>
+        <p class="text-sm sm:text-base text-[#a89f91]">
+          Read genuine impressions from food critics, families, and regular patrons who make Turkish Restaurant their favorite culinary destination.
+        </p>
+      </div>
+
+      <!-- 3 Testimonial Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        @for (review of reviews(); track review.id) {
+          <div
+            [id]="'review-card-' + review.id"
+            class="p-8 rounded-2xl bg-[#171311] border border-[#332b26] hover:border-[#d4af37]/60 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_35px_-10px_rgba(212,175,55,0.12)] flex flex-col justify-between space-y-6 relative"
+          >
+            <!-- Quote Icon Decoration -->
+            <div class="absolute top-6 right-6 text-[#d4af37]/20 pointer-events-none">
+              <mat-icon class="text-5xl">format_quote</mat-icon>
+            </div>
+
+            <!-- Star Rating -->
+            <div class="space-y-3">
+              <div class="flex items-center gap-1 text-[#d4af37]">
+                @for (star of [1, 2, 3, 4, 5]; track star) {
+                  <mat-icon class="text-xl">star</mat-icon>
+                }
+              </div>
+
+              <!-- Short Review -->
+              <p class="text-sm text-[#dcd6cc] font-light leading-relaxed italic">
+                "{{ review.comment }}"
+              </p>
+            </div>
+
+            <!-- Customer Profile Info -->
+            <div class="pt-4 border-t border-[#332b26] flex items-center gap-4">
+              <img
+                [src]="review.avatar"
+                [alt]="review.customerName"
+                class="w-12 h-12 rounded-full object-cover border-2 border-[#d4af37]/40 shrink-0"
+                referrerpolicy="no-referrer"
+              />
+              <div class="flex flex-col">
+                <h4 class="font-serif font-bold text-white text-base">
+                  {{ review.customerName }}
+                </h4>
+                <span class="text-xs text-[#a89f91]">
+                  {{ review.roleOrLocation }}
+                </span>
+                @if (review.dishRecommended) {
+                  <span class="text-[11px] text-[#d4af37] mt-0.5">
+                    Loves: {{ review.dishRecommended }}
+                  </span>
+                }
+              </div>
+            </div>
+
+          </div>
+        }
+      </div>
+
+      <!-- Trust Bar -->
+      <div class="max-w-3xl mx-auto p-6 rounded-2xl bg-[#1e1916] border border-[#d4af37]/30 text-center flex flex-col sm:flex-row items-center justify-around gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-full bg-[#d4af37]/20 text-[#d4af37] flex items-center justify-center font-bold">
+            <mat-icon>stars</mat-icon>
+          </div>
+          <div class="text-left">
+            <div class="font-bold text-white text-lg">Rated 4.9 out of 5.0</div>
+            <div class="text-xs text-[#a89f91]">Google Maps & Food Delivery Platforms</div>
+          </div>
+        </div>
+        <div class="h-8 w-[1px] bg-[#332b26] hidden sm:block"></div>
+        <div class="text-xs text-[#a89f91] max-w-xs text-left">
+          Join over <strong class="text-white">50,000+ happy patrons</strong> who enjoy authentic Turkish banquets with us every year.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- 9. RESERVATION SECTION -->
+  <section id="reservation" class="py-24 px-4 sm:px-6 lg:px-8 bg-[#14100e] relative">
+    <div class="max-w-5xl mx-auto">
+      
+      <div class="bg-[#1a1614] rounded-3xl border border-[#d4af37]/30 p-8 sm:p-12 lg:p-16 shadow-2xl relative overflow-hidden">
+        
+        <!-- Decorative Glow -->
+        <div class="absolute -right-20 -top-20 w-80 h-80 bg-[#d4af37]/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <!-- Section Heading -->
+        <div class="text-center space-y-4 max-w-2xl mx-auto mb-12">
+          <div class="inline-flex items-center gap-2 text-[#d4af37] text-sm uppercase tracking-widest font-semibold">
+            <mat-icon class="text-base">table_restaurant</mat-icon>
+            <span>Reserve Your Experience</span>
+          </div>
+          <h2 class="text-3xl sm:text-5xl font-serif font-bold text-white tracking-tight">
+            Book Your Table
+          </h2>
+          <p class="text-sm sm:text-base text-[#a89f91]">
+            Guarantee your seating for family dinners, VIP gatherings, or romantic evenings. All reservations are instantly confirmed.
+          </p>
+        </div>
+
+        <!-- Confirmation State View -->
+        @if (reservationSubmitted() && reservationSuccessData()) {
+          @let resData = reservationSuccessData()!;
+          <div
+            id="reservation-confirmation-card"
+            class="p-8 rounded-2xl bg-[#211c19] border border-[#d4af37] text-center space-y-6 max-w-xl mx-auto shadow-2xl animate-fade-in"
+          >
+            <div class="w-16 h-16 rounded-full bg-[#d4af37] text-[#0f0c0a] flex items-center justify-center mx-auto shadow-lg">
+              <mat-icon class="text-3xl font-bold">check</mat-icon>
+            </div>
+
+            <div class="space-y-2">
+              <span class="text-xs uppercase tracking-widest text-[#d4af37] font-semibold">
+                Table Reserved Successfully
+              </span>
+              <h3 class="text-2xl font-serif font-bold text-white">
+                We Look Forward to Welcoming You, {{ resData.name }}!
+              </h3>
+              <p class="text-sm text-[#dcd6cc]">
+                Your reservation reference code is <span class="text-[#d4af37] font-bold font-mono">{{ resData.bookingReference }}</span>.
+              </p>
+            </div>
+
+            <!-- Booking Summary Details -->
+            <div class="grid grid-cols-2 gap-4 text-left p-4 rounded-xl bg-[#14100e] border border-[#332b26] text-xs sm:text-sm">
+              <div>
+                <span class="text-[#a89f91] block">Date:</span>
+                <span class="font-semibold text-white">{{ resData.date }}</span>
+              </div>
+              <div>
+                <span class="text-[#a89f91] block">Time:</span>
+                <span class="font-semibold text-white">{{ resData.time }}</span>
+              </div>
+              <div>
+                <span class="text-[#a89f91] block">Guests:</span>
+                <span class="font-semibold text-white">{{ resData.guests }} Persons</span>
+              </div>
+              <div>
+                <span class="text-[#a89f91] block">Phone:</span>
+                <span class="font-semibold text-white">{{ resData.phone }}</span>
+              </div>
+              @if (resData.specialRequest) {
+                <div class="col-span-2 pt-2 border-t border-[#332b26]">
+                  <span class="text-[#a89f91] block">Special Request:</span>
+                  <span class="font-light text-[#dcd6cc] italic">{{ resData.specialRequest }}</span>
+                </div>
+              }
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+              <button
+                id="res-new-booking-btn"
+                type="button"
+                (click)="resetReservation()"
+                class="btn-outline-gold px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase cursor-pointer"
+              >
+                Make Another Booking
+              </button>
+
+              <button
+                id="res-view-menu-btn"
+                type="button"
+                (click)="scrollToSection('menu')"
+                class="btn-gold px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase cursor-pointer"
+              >
+                Pre-select Dishes
+              </button>
+            </div>
+          </div>
+        } @else {
+
+          <!-- Form View with Reactive Validation -->
+          <form
+            id="table-reservation-form"
+            [formGroup]="reservationForm"
+            (ngSubmit)="onSubmitReservation()"
+            class="space-y-6 max-w-3xl mx-auto"
+          >
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              <!-- Name Input -->
+              <div class="space-y-2">
+                <label for="res-name-input" class="block text-xs uppercase tracking-wider text-[#dcd6cc] font-medium">
+                  Full Name <span class="text-[#d4af37]">*</span>
+                </label>
+                <div class="relative">
+                  <mat-icon class="absolute left-4 top-1/2 -translate-y-1/2 text-[#a89f91] text-lg">person</mat-icon>
+                  <input
+                    id="res-name-input"
+                    type="text"
+                    formControlName="name"
+                    placeholder="e.g. Tariq Mehmood"
+                    class="w-full bg-[#14100e] border border-[#332b26] focus:border-[#d4af37] text-white pl-11 pr-4 py-3 rounded-xl text-sm placeholder-[#6b6257] outline-none transition-colors"
+                    [class.border-red-500]="reservationForm.controls.name.invalid && reservationForm.controls.name.touched"
+                  />
+                </div>
+                @if (reservationForm.controls.name.invalid && reservationForm.controls.name.touched) {
+                  <p class="text-xs text-red-400">Please enter your name (at least 3 characters).</p>
+                }
+              </div>
+
+              <!-- Email Input -->
+              <div class="space-y-2">
+                <label for="res-email-input" class="block text-xs uppercase tracking-wider text-[#dcd6cc] font-medium">
+                  Email Address <span class="text-[#d4af37]">*</span>
+                </label>
+                <div class="relative">
+                  <mat-icon class="absolute left-4 top-1/2 -translate-y-1/2 text-[#a89f91] text-lg">email</mat-icon>
+                  <input
+                    id="res-email-input"
+                    type="email"
+                    formControlName="email"
+                    placeholder="e.g. name@example.com"
+                    class="w-full bg-[#14100e] border border-[#332b26] focus:border-[#d4af37] text-white pl-11 pr-4 py-3 rounded-xl text-sm placeholder-[#6b6257] outline-none transition-colors"
+                    [class.border-red-500]="reservationForm.controls.email.invalid && reservationForm.controls.email.touched"
+                  />
+                </div>
+                @if (reservationForm.controls.email.invalid && reservationForm.controls.email.touched) {
+                  <p class="text-xs text-red-400">Please enter a valid email address.</p>
+                }
+              </div>
+
+              <!-- Phone Input -->
+              <div class="space-y-2">
+                <label for="res-phone-input" class="block text-xs uppercase tracking-wider text-[#dcd6cc] font-medium">
+                  Phone Number <span class="text-[#d4af37]">*</span>
+                </label>
+                <div class="relative">
+                  <mat-icon class="absolute left-4 top-1/2 -translate-y-1/2 text-[#a89f91] text-lg">phone</mat-icon>
+                  <input
+                    id="res-phone-input"
+                    type="tel"
+                    formControlName="phone"
+                    placeholder="e.g. +92 300 1234567"
+                    class="w-full bg-[#14100e] border border-[#332b26] focus:border-[#d4af37] text-white pl-11 pr-4 py-3 rounded-xl text-sm placeholder-[#6b6257] outline-none transition-colors"
+                    [class.border-red-500]="reservationForm.controls.phone.invalid && reservationForm.controls.phone.touched"
+                  />
+                </div>
+                @if (reservationForm.controls.phone.invalid && reservationForm.controls.phone.touched) {
+                  <p class="text-xs text-red-400">Please provide a valid contact number.</p>
+                }
+              </div>
+
+              <!-- Date Input -->
+              <div class="space-y-2">
+                <label for="res-date-input" class="block text-xs uppercase tracking-wider text-[#dcd6cc] font-medium">
+                  Reservation Date <span class="text-[#d4af37]">*</span>
+                </label>
+                <div class="relative">
+                  <mat-icon class="absolute left-4 top-1/2 -translate-y-1/2 text-[#a89f91] text-lg">calendar_today</mat-icon>
+                  <input
+                    id="res-date-input"
+                    type="date"
+                    formControlName="date"
+                    class="w-full bg-[#14100e] border border-[#332b26] focus:border-[#d4af37] text-white pl-11 pr-4 py-3 rounded-xl text-sm placeholder-[#6b6257] outline-none transition-colors"
+                    [class.border-red-500]="reservationForm.controls.date.invalid && reservationForm.controls.date.touched"
+                  />
+                </div>
+                @if (reservationForm.controls.date.invalid && reservationForm.controls.date.touched) {
+                  <p class="text-xs text-red-400">Please select a reservation date.</p>
+                }
+              </div>
+
+              <!-- Time Slot Input -->
+              <div class="space-y-2">
+                <label for="res-time-select" class="block text-xs uppercase tracking-wider text-[#dcd6cc] font-medium">
+                  Dining Time Slot <span class="text-[#d4af37]">*</span>
+                </label>
+                <div class="relative">
+                  <mat-icon class="absolute left-4 top-1/2 -translate-y-1/2 text-[#a89f91] text-lg">schedule</mat-icon>
+                  <select
+                    id="res-time-select"
+                    formControlName="time"
+                    class="w-full bg-[#14100e] border border-[#332b26] focus:border-[#d4af37] text-white pl-11 pr-4 py-3 rounded-xl text-sm outline-none transition-colors appearance-none cursor-pointer"
+                  >
+                    <option value="12:30">12:30 PM (Lunch Opening)</option>
+                    <option value="13:30">01:30 PM (Lunch)</option>
+                    <option value="14:30">02:30 PM (Afternoon)</option>
+                    <option value="18:30">06:30 PM (Early Dinner)</option>
+                    <option value="19:30">07:30 PM (Prime Dinner)</option>
+                    <option value="20:30">08:30 PM (Family Hour)</option>
+                    <option value="21:30">09:30 PM (Evening Banquet)</option>
+                    <option value="22:30">10:30 PM (Late Night Feast)</option>
+                    <option value="23:30">11:30 PM (Midnight Dining)</option>
+                    <option value="00:30">12:30 AM (Late Supper)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Number of Guests Input -->
+              <div class="space-y-2">
+                <label for="res-guests-select" class="block text-xs uppercase tracking-wider text-[#dcd6cc] font-medium">
+                  Number of Guests <span class="text-[#d4af37]">*</span>
+                </label>
+                <div class="relative">
+                  <mat-icon class="absolute left-4 top-1/2 -translate-y-1/2 text-[#a89f91] text-lg">group</mat-icon>
+                  <select
+                    id="res-guests-select"
+                    formControlName="guests"
+                    class="w-full bg-[#14100e] border border-[#332b26] focus:border-[#d4af37] text-white pl-11 pr-4 py-3 rounded-xl text-sm outline-none transition-colors appearance-none cursor-pointer"
+                  >
+                    <option [value]="1">1 Person (Solo Dining)</option>
+                    <option [value]="2">2 Persons (Couple Table)</option>
+                    <option [value]="4">3 - 4 Persons (Small Family)</option>
+                    <option [value]="6">5 - 6 Persons (Family Table)</option>
+                    <option [value]="8">7 - 8 Persons (Large Party)</option>
+                    <option [value]="12">9 - 12 Persons (VIP Chamber)</option>
+                    <option [value]="20">13 - 20+ Persons (Royal Banquet)</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Special Request Input -->
+            <div class="space-y-2">
+              <label for="res-special-request" class="block text-xs uppercase tracking-wider text-[#dcd6cc] font-medium">
+                Special Request / Occasion (Optional)
+              </label>
+              <textarea
+                id="res-special-request"
+                formControlName="specialRequest"
+                rows="3"
+                placeholder="e.g. Birthday celebration, anniversary, high chair needed, preferred quiet corner or window table..."
+                class="w-full bg-[#14100e] border border-[#332b26] focus:border-[#d4af37] text-white px-4 py-3 rounded-xl text-sm placeholder-[#6b6257] outline-none transition-colors resize-none"
+              ></textarea>
+            </div>
+
+            <!-- Submit Button: “Reserve Now” -->
+            <div class="text-center pt-4">
+              <button
+                id="reservation-submit-btn"
+                type="submit"
+                [disabled]="isSubmittingReservation()"
+                class="btn-gold px-10 py-4 rounded-full text-base font-semibold tracking-wider uppercase cursor-pointer inline-flex items-center justify-center gap-2 shadow-xl w-full sm:w-auto disabled:opacity-50"
+              >
+                @if (isSubmittingReservation()) {
+                  <mat-icon class="animate-spin text-lg">autorenew</mat-icon>
+                  Confirming Table...
+                } @else {
+                  <mat-icon>check_circle</mat-icon>
+                  Reserve Now
+                }
+              </button>
+              <p class="text-xs text-[#a89f91] mt-3">
+                No advance booking deposit required • Instant confirmation
+              </p>
+            </div>
+
+          </form>
+
+        }
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- 10. CONTACT SECTION -->
+  <section id="contact" class="py-24 px-4 sm:px-6 lg:px-8 bg-[#0f0c0a] relative">
+    <div class="max-w-7xl mx-auto space-y-16">
+      
+      <!-- Section Header -->
+      <div class="text-center space-y-4 max-w-2xl mx-auto">
+        <div class="inline-flex items-center gap-2 text-[#d4af37] text-sm uppercase tracking-widest font-semibold">
+          <span class="w-6 h-[1px] bg-[#d4af37]"></span>
+          <span>Find & Connect</span>
+          <span class="w-6 h-[1px] bg-[#d4af37]"></span>
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-serif font-bold text-white tracking-tight">
+          Visit Us in Faisalabad
+        </h2>
+        <p class="text-sm sm:text-base text-[#a89f91]">
+          Located prominently along the main arterial corridor near Misaq ul Mall and Imtiaz Mart, Nishatabad.
+        </p>
+      </div>
+
+      <!-- Contact Details & Map Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        
+        <!-- Left: Contact Details Cards (Address, Phone, Email, Hours, Socials) -->
+        <div class="lg:col-span-6 space-y-6">
+          
+          <!-- Address Card -->
+          <div class="p-6 rounded-2xl bg-[#171311] border border-[#332b26] flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/30 flex items-center justify-center shrink-0">
+              <mat-icon>place</mat-icon>
+            </div>
+            <div class="space-y-1">
+              <h4 class="font-serif font-bold text-white text-base">Restaurant Location</h4>
+              <p class="text-sm text-[#dcd6cc] leading-relaxed">
+                {{ restaurantInfo.address }}
+              </p>
+              <div class="pt-2">
+                <a
+                  id="contact-directions-link"
+                  [href]="restaurantInfo.googleMapsUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1.5 text-xs text-[#d4af37] hover:underline font-semibold"
+                >
+                  <mat-icon class="text-sm">directions</mat-icon>
+                  Get Driving Directions
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phone & Email Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Phone -->
+            <div class="p-5 rounded-2xl bg-[#171311] border border-[#332b26] flex items-start gap-3">
+              <div class="w-10 h-10 rounded-lg bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/30 flex items-center justify-center shrink-0">
+                <mat-icon class="text-xl">phone</mat-icon>
+              </div>
+              <div class="space-y-1">
+                <h4 class="font-serif font-bold text-white text-sm">Phone Lines</h4>
+                <a [href]="'tel:' + restaurantInfo.phone" class="text-xs text-[#dcd6cc] block hover:text-[#d4af37] transition-colors">
+                  {{ restaurantInfo.phone }}
+                </a>
+                <a [href]="'tel:' + restaurantInfo.phoneSecondary" class="text-xs text-[#a89f91] block hover:text-[#d4af37] transition-colors">
+                  {{ restaurantInfo.phoneSecondary }}
+                </a>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="p-5 rounded-2xl bg-[#171311] border border-[#332b26] flex items-start gap-3">
+              <div class="w-10 h-10 rounded-lg bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/30 flex items-center justify-center shrink-0">
+                <mat-icon class="text-xl">email</mat-icon>
+              </div>
+              <div class="space-y-1">
+                <h4 class="font-serif font-bold text-white text-sm">Direct Email</h4>
+                <a [href]="'mailto:' + restaurantInfo.email" class="text-xs text-[#dcd6cc] block hover:text-[#d4af37] transition-colors break-all">
+                  {{ restaurantInfo.email }}
+                </a>
+                <span class="text-[10px] text-[#a89f91]">Events & Group Bookings</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Opening Hours Card -->
+          <div class="p-6 rounded-2xl bg-[#171311] border border-[#332b26] flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/30 flex items-center justify-center shrink-0">
+              <mat-icon>access_time</mat-icon>
+            </div>
+            <div class="space-y-1 flex-grow">
+              <div class="flex items-center justify-between">
+                <h4 class="font-serif font-bold text-white text-base">Opening Hours</h4>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">
+                  Open Daily
+                </span>
+              </div>
+              <p class="text-sm text-[#d4af37] font-semibold">
+                {{ restaurantInfo.openingHours }}
+              </p>
+              <p class="text-xs text-[#a89f91]">
+                Serving lunch, afternoon tea, dinner banquets, and late-night grills until 1:30 AM every single day of the week.
+              </p>
+            </div>
+          </div>
+
+          <!-- Social Media Icons -->
+          <div class="p-6 rounded-2xl bg-[#171311] border border-[#332b26] flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <h4 class="font-serif font-bold text-white text-sm">Follow Our Social Stories</h4>
+              <p class="text-xs text-[#a89f91]">Watch daily fresh grill videos & special seasonal discounts.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <a
+                id="social-instagram"
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-10 h-10 rounded-full bg-[#1e1916] border border-[#d4af37]/30 text-[#f4efe6] hover:bg-white hover:text-[#0f0c0a] flex items-center justify-center transition-all cursor-pointer shadow"
+                title="Instagram"
+              >
+                <mat-icon class="text-lg">photo_camera</mat-icon>
+              </a>
+              <a
+                id="social-facebook"
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-10 h-10 rounded-full bg-[#1e1916] border border-[#d4af37]/30 text-[#f4efe6] hover:bg-white hover:text-[#0f0c0a] flex items-center justify-center transition-all cursor-pointer shadow"
+                title="Facebook"
+              >
+                <mat-icon class="text-lg">thumb_up</mat-icon>
+              </a>
+              <a
+                id="social-whatsapp"
+                href="https://wa.me/923001234567"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-10 h-10 rounded-full bg-[#1e1916] border border-[#d4af37]/30 text-[#f4efe6] hover:bg-white hover:text-[#0f0c0a] flex items-center justify-center transition-all cursor-pointer shadow"
+                title="WhatsApp"
+              >
+                <mat-icon class="text-lg">chat</mat-icon>
+              </a>
+              <a
+                id="social-youtube"
+                href="https://youtube.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-10 h-10 rounded-full bg-[#1e1916] border border-[#d4af37]/30 text-[#f4efe6] hover:bg-white hover:text-[#0f0c0a] flex items-center justify-center transition-all cursor-pointer shadow"
+                title="YouTube"
+              >
+                <mat-icon class="text-lg">play_circle</mat-icon>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Google Maps Interactive Placeholder & Send Inquiry Card -->
+        <div class="lg:col-span-6 space-y-6">
+          
+          <!-- Google Maps Placeholder Card -->
+          <div
+            id="google-maps-card"
+            class="rounded-3xl overflow-hidden border border-[#d4af37]/30 bg-[#171311] relative shadow-2xl group"
+          >
+            <!-- Stylized Map Canvas View -->
+            <div class="h-80 w-full relative bg-[#1e1b18] overflow-hidden flex items-center justify-center">
+              
+              <!-- Map Background Graphic Simulator -->
+              <div class="absolute inset-0 opacity-30 bg-[#26201b]"></div>
+              
+              <!-- Roads simulation -->
+              <div class="absolute w-full h-2 bg-[#423933] top-1/2 -translate-y-1/2 rotate-12"></div>
+              <div class="absolute h-full w-2 bg-[#423933] left-1/3 -rotate-6"></div>
+              <div class="absolute w-full h-1 bg-[#d4af37]/20 top-1/2 -translate-y-1/2 rotate-12"></div>
+
+              <!-- Animated Pin Marker -->
+              <div class="relative z-10 flex flex-col items-center">
+                <div class="w-12 h-12 rounded-full bg-[#d4af37] text-[#0f0c0a] flex items-center justify-center shadow-[0_0_30px_rgba(212,175,55,0.6)] animate-bounce">
+                  <mat-icon class="text-2xl font-bold">restaurant</mat-icon>
+                </div>
+                <div class="w-6 h-2 bg-black/60 rounded-full blur-xs mt-1"></div>
+                
+                <div class="mt-2 px-3 py-1.5 rounded-lg bg-[#0f0c0a]/95 backdrop-blur-md border border-[#d4af37] text-white text-xs font-serif font-bold shadow-xl">
+                  TURKISH RESTAURANT
+                </div>
+                <span class="text-[10px] text-[#d4af37] font-sans font-semibold mt-0.5">
+                  Opposite Imtiaz Mart, Nishatabad
+                </span>
+              </div>
+
+              <!-- Floating Controls Overlay -->
+              <div class="absolute top-4 right-4 flex flex-col gap-2">
+                <a
+                  id="map-open-google-btn"
+                  [href]="restaurantInfo.googleMapsUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-gold px-4 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 shadow-lg"
+                >
+                  <mat-icon class="text-sm">open_in_new</mat-icon>
+                  Open in Maps
+                </a>
+              </div>
+
+            </div>
+
+            <!-- Map Location Caption Footer -->
+            <div class="p-6 bg-[#1a1614] border-t border-[#332b26] flex items-center justify-between">
+              <div>
+                <h4 class="font-serif font-bold text-white text-sm">Faisalabad Flagship Branch</h4>
+                <p class="text-xs text-[#a89f91]">Lahore - Sheikhupura - Faisalabad Road, Nishatabad</p>
+              </div>
+              <a
+                id="map-call-btn"
+                [href]="'tel:' + restaurantInfo.phone"
+                class="btn-outline-gold px-4 py-2 rounded-xl text-xs font-semibold uppercase flex items-center gap-1.5"
+              >
+                <mat-icon class="text-sm">call</mat-icon>
+                Call Location
+              </a>
+            </div>
+
+          </div>
+
+          <!-- Quick Message Box -->
+          <div class="p-6 sm:p-8 rounded-2xl bg-[#171311] border border-[#332b26] space-y-4">
+            <h4 class="font-serif font-bold text-white text-lg">Send Us a Direct Message</h4>
+            <p class="text-xs text-[#a89f91]">Have questions regarding catering, private banquets, or corporate reservations? Drop us a line.</p>
+
+            @if (contactSuccessNotice()) {
+              <div class="p-4 rounded-xl bg-emerald-950/60 border border-emerald-500/50 text-emerald-200 text-xs flex items-center justify-between">
+                <span>{{ contactSuccessNotice() }}</span>
+                <button type="button" (click)="dismissContactNotice()" class="text-emerald-400 hover:text-white">
+                  <mat-icon class="text-base">close</mat-icon>
+                </button>
+              </div>
+            }
+
+            <form [formGroup]="contactForm" (ngSubmit)="onSubmitContact()" class="space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <input
+                  type="text"
+                  formControlName="contactName"
+                  placeholder="Your Name"
+                  class="bg-[#14100e] border border-[#332b26] focus:border-[#d4af37] text-white px-4 py-2.5 rounded-xl text-xs outline-none"
+                />
+                <input
+                  type="email"
+                  formControlName="contactEmail"
+                  placeholder="Your Email"
+                  class="bg-[#14100e] border border-[#332b26] focus:border-[#d4af37] text-white px-4 py-2.5 rounded-xl text-xs outline-none"
+                />
+              </div>
+              <textarea
+                formControlName="contactMessage"
+                rows="3"
+                placeholder="How can our hospitality team assist you?"
+                class="w-full bg-[#14100e] border border-[#332b26] focus:border-[#d4af37] text-white px-4 py-2.5 rounded-xl text-xs outline-none resize-none"
+              ></textarea>
+              <button
+                id="contact-send-msg-btn"
+                type="submit"
+                class="btn-gold px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 cursor-pointer shadow"
+              >
+                <mat-icon class="text-sm">send</mat-icon>
+                Send Message
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- 11. FOOTER -->
+  <footer id="main-footer" class="bg-[#0a0807] border-t border-[#332b26] text-[#a89f91] pt-16 pb-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto space-y-12">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
+        
+        <!-- Column 1: Restaurant Name & Description -->
+        <div class="lg:col-span-4 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#d4af37] to-[#997922] p-[1px] flex items-center justify-center">
+              <div class="w-full h-full rounded-full bg-[#0a0807] flex items-center justify-center">
+                <mat-icon class="text-[#d4af37] text-xl">outdoor_grill</mat-icon>
+              </div>
+            </div>
+            <span class="font-serif text-lg font-bold text-white tracking-widest">
+              TURKISH RESTAURANT
+            </span>
+          </div>
+          
+          <p class="text-xs sm:text-sm text-[#a89f91] leading-relaxed font-light">
+            Bringing centuries of Ottoman culinary artistry and genuine Anatolian hospitality to Faisalabad. Fresh, flavorful, wood-fired, and 100% Halal certified every day.
+          </p>
+
+          <div class="flex items-center gap-3 pt-2">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-[#171311] border border-[#332b26] text-[#d4af37] hover:bg-white hover:text-[#0f0c0a] flex items-center justify-center transition-all cursor-pointer" title="Instagram">
+              <mat-icon class="text-sm">photo_camera</mat-icon>
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-[#171311] border border-[#332b26] text-[#d4af37] hover:bg-white hover:text-[#0f0c0a] flex items-center justify-center transition-all cursor-pointer" title="Facebook">
+              <mat-icon class="text-sm">thumb_up</mat-icon>
+            </a>
+            <a href="https://wa.me/923001234567" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-[#171311] border border-[#332b26] text-[#d4af37] hover:bg-white hover:text-[#0f0c0a] flex items-center justify-center transition-all cursor-pointer" title="WhatsApp">
+              <mat-icon class="text-sm">chat</mat-icon>
+            </a>
+          </div>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div class="lg:col-span-2 space-y-4">
+          <h4 class="font-serif font-bold text-white text-sm uppercase tracking-wider">Quick Links</h4>
+          <ul class="space-y-2 text-xs">
+            <li>
+              <button type="button" (click)="scrollToSection('hero')" class="hover:text-[#d4af37] transition-colors cursor-pointer">
+                Home
+              </button>
+            </li>
+            <li>
+              <button type="button" (click)="scrollToSection('about')" class="hover:text-[#d4af37] transition-colors cursor-pointer">
+                About Us
+              </button>
+            </li>
+            <li>
+              <button type="button" (click)="scrollToSection('menu')" class="hover:text-[#d4af37] transition-colors cursor-pointer">
+                Our Menu
+              </button>
+            </li>
+            <li>
+              <button type="button" (click)="scrollToSection('special')" class="hover:text-[#d4af37] transition-colors cursor-pointer">
+                Chef's Specials
+              </button>
+            </li>
+            <li>
+              <button type="button" (click)="scrollToSection('gallery')" class="hover:text-[#d4af37] transition-colors cursor-pointer">
+                Photo Gallery
+              </button>
+            </li>
+            <li>
+              <button type="button" (click)="scrollToSection('reviews')" class="hover:text-[#d4af37] transition-colors cursor-pointer">
+                Guest Reviews
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Contact Info -->
+        <div class="lg:col-span-3 space-y-4">
+          <h4 class="font-serif font-bold text-white text-sm uppercase tracking-wider">Contact Info</h4>
+          <ul class="space-y-2.5 text-xs">
+            <li class="flex items-start gap-2">
+              <mat-icon class="text-[#d4af37] text-sm mt-0.5 shrink-0">place</mat-icon>
+              <span>Nishatabad, opposite Imtiaz Mart, Faisalabad, 38000</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <mat-icon class="text-[#d4af37] text-sm shrink-0">phone</mat-icon>
+              <a [href]="'tel:' + restaurantInfo.phone" class="hover:text-[#d4af37] transition-colors">{{ restaurantInfo.phone }}</a>
+            </li>
+            <li class="flex items-center gap-2">
+              <mat-icon class="text-[#d4af37] text-sm shrink-0">email</mat-icon>
+              <a [href]="'mailto:' + restaurantInfo.email" class="hover:text-[#d4af37] transition-colors">{{ restaurantInfo.email }}</a>
+            </li>
+            <li class="flex items-center gap-2">
+              <mat-icon class="text-[#d4af37] text-sm shrink-0">schedule</mat-icon>
+              <span>All Days: 12:30 PM – 1:30 AM</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Reservation & Newsletter Callout -->
+        <div class="lg:col-span-3 space-y-4">
+          <h4 class="font-serif font-bold text-white text-sm uppercase tracking-wider">Book a Table</h4>
+          <p class="text-xs text-[#a89f91] leading-relaxed">
+            Planning a visit tonight? Secure your preferred seating or VIP family room in advance.
+          </p>
+          <button
+            id="footer-book-table-btn"
+            type="button"
+            (click)="scrollToSection('reservation')"
+            class="btn-gold w-full py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider cursor-pointer flex items-center justify-center gap-1.5 shadow"
+          >
+            <mat-icon class="text-sm">table_restaurant</mat-icon>
+            Online Reservation
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Copyright Text & Divider -->
+      <div class="pt-8 border-t border-[#211c19] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+        <p>© 2026 Turkish Restaurant. All Rights Reserved. Crafted with passion.</p>
+        <div class="flex items-center gap-6">
+          <span class="text-[#d4af37] font-medium">100% Halal Verified</span>
+          <span>•</span>
+          <span>Charcoal Mangal Specialists</span>
+          <span>•</span>
+          <button type="button" (click)="scrollToTop()" class="hover:text-white transition-colors cursor-pointer flex items-center gap-1">
+            <span>Back to top</span>
+            <mat-icon class="text-sm">arrow_upward</mat-icon>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <!-- FLOATING BACK-TO-TOP CIRCULAR BUTTON -->
+  @if (isScrolled()) {
+    <button
+      id="back-to-top-btn"
+      type="button"
+      (click)="scrollToTop()"
+      class="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-[#1e1916] border border-[#d4af37] text-[#d4af37] hover:bg-white hover:text-[#0f0c0a] hover:border-white shadow-2xl flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110"
+      aria-label="Back to Top"
+      title="Scroll to top"
+    >
+      <mat-icon class="text-xl">arrow_upward</mat-icon>
+    </button>
+  }
+
+
+  <!-- QUICK ORDER / ITEM DETAILS MODAL -->
+  @if (quickOrderItem()) {
+    @let qItem = quickOrderItem()!;
+    <div
+      id="quick-order-modal"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in"
+    >
+      <div class="bg-[#171311] rounded-3xl border border-[#d4af37]/40 max-w-lg w-full overflow-hidden shadow-2xl space-y-6">
+        
+        <!-- Header Image -->
+        <div class="relative h-52 w-full bg-[#211c19]">
+          <img
+            [src]="qItem.image"
+            [alt]="qItem.name"
+            class="w-full h-full object-cover"
+            referrerpolicy="no-referrer"
+            (error)="onImageError($event)"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#171311] via-transparent to-transparent"></div>
+          
+          <button
+            id="close-quick-order-btn"
+            type="button"
+            (click)="closeQuickOrder()"
+            class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 text-white hover:bg-white hover:text-black flex items-center justify-center transition-colors cursor-pointer"
+          >
+            <mat-icon class="text-lg">close</mat-icon>
+          </button>
+        </div>
+
+        <!-- Body -->
+        <div class="px-6 pb-6 space-y-5">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <h3 class="font-serif text-2xl font-bold text-white">{{ qItem.name }}</h3>
+              @if (qItem.turkishName) {
+                <span class="text-xs text-[#d4af37] font-semibold">{{ qItem.turkishName }}</span>
+              }
+            </div>
+            <div class="text-[#d4af37] font-serif font-bold text-xl">
+              PKR {{ (qItem.price * quickOrderQuantity()).toLocaleString() }}
+            </div>
+          </div>
+
+          <p class="text-xs sm:text-sm text-[#a89f91] font-light leading-relaxed">
+            {{ qItem.description }}
+          </p>
+
+          <!-- Quantity Selector -->
+          <div class="flex items-center justify-between p-3.5 rounded-xl bg-[#14100e] border border-[#332b26]">
+            <span class="text-xs text-[#dcd6cc] font-medium uppercase tracking-wider">Select Quantity:</span>
+            <div class="flex items-center gap-3">
+              <button
+                type="button"
+                (click)="adjustQuantity(-1)"
+                class="w-8 h-8 rounded-lg bg-[#211c19] text-white hover:bg-[#d4af37] hover:text-[#0f0c0a] flex items-center justify-center transition-colors font-bold cursor-pointer"
+              >
+                -
+              </button>
+              <span class="font-bold text-white text-base w-6 text-center">{{ quickOrderQuantity() }}</span>
+              <button
+                type="button"
+                (click)="adjustQuantity(1)"
+                class="w-8 h-8 rounded-lg bg-[#211c19] text-white hover:bg-[#d4af37] hover:text-[#0f0c0a] flex items-center justify-center transition-colors font-bold cursor-pointer"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          <!-- Special Notes -->
+          <div class="space-y-1.5">
+            <label for="quick-order-customization-input" class="text-[11px] text-[#a89f91] uppercase tracking-wider block">Chef Instructions / Customization:</label>
+            <input
+              id="quick-order-customization-input"
+              type="text"
+              placeholder="e.g. Extra garlic yoghurt, well done, less chili..."
+              [value]="quickOrderNotes()"
+              (input)="updateNotes($event)"
+              class="w-full bg-[#14100e] border border-[#332b26] focus:border-[#d4af37] text-white px-3.5 py-2.5 rounded-xl text-xs outline-none"
+            />
+          </div>
+
+          <!-- Actions -->
+          <div class="flex items-center gap-3 pt-2">
+            <button
+              id="confirm-add-cart-btn"
+              type="button"
+              (click)="confirmAddToCart()"
+              class="btn-gold flex-grow py-3 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+            >
+              <mat-icon class="text-sm">add_shopping_cart</mat-icon>
+              Add to Order (PKR {{ (qItem.price * quickOrderQuantity()).toLocaleString() }})
+            </button>
+
+            <button
+              type="button"
+              (click)="closeQuickOrder()"
+              class="btn-outline-gold px-5 py-3 rounded-full text-xs font-semibold uppercase cursor-pointer"
+            >
+              Cancel
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  }
+
+
+  <!-- ORDER DRAWER / BASKET -->
+  @if (orderDrawerOpen()) {
+    <div
+      id="order-drawer-backdrop"
+      class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex justify-end animate-fade-in"
+    >
+      <div class="bg-[#171311] w-full max-w-md h-full flex flex-col justify-between border-l border-[#d4af37]/30 shadow-2xl p-6 overflow-y-auto">
+        
+        <!-- Drawer Header -->
+        <div class="flex items-center justify-between pb-4 border-b border-[#332b26]">
+          <div class="flex items-center gap-2">
+            <mat-icon class="text-[#d4af37]">restaurant</mat-icon>
+            <h3 class="font-serif font-bold text-white text-lg">Your Current Order</h3>
+          </div>
+          <button
+            id="close-order-drawer-btn"
+            type="button"
+            (click)="toggleCartDrawer()"
+            class="text-[#a89f91] hover:text-white cursor-pointer"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <!-- Items List -->
+        <div class="flex-grow py-4 space-y-4 overflow-y-auto">
+          @for (cItem of cartItems(); track cItem.item.id; let idx = $index) {
+            <div class="p-3.5 rounded-xl bg-[#14100e] border border-[#332b26] flex items-center justify-between gap-3">
+              <div class="flex-grow space-y-1">
+                <h4 class="font-serif font-semibold text-white text-sm">{{ cItem.item.name }}</h4>
+                <div class="text-xs text-[#d4af37]">
+                  PKR {{ cItem.item.price.toLocaleString() }} x {{ cItem.quantity }} = PKR {{ (cItem.item.price * cItem.quantity).toLocaleString() }}
+                </div>
+                @if (cItem.specialInstructions) {
+                  <p class="text-[11px] text-[#a89f91] italic">Note: {{ cItem.specialInstructions }}</p>
+                }
+              </div>
+
+              <!-- Stepper -->
+              <div class="flex items-center gap-2">
+                <button
+                  type="button"
+                  (click)="updateCartItemQty(idx, -1)"
+                  class="w-6 h-6 rounded bg-[#211c19] text-white hover:bg-[#d4af37] hover:text-black flex items-center justify-center text-xs font-bold"
+                >
+                  -
+                </button>
+                <span class="text-xs font-bold text-white w-4 text-center">{{ cItem.quantity }}</span>
+                <button
+                  type="button"
+                  (click)="updateCartItemQty(idx, 1)"
+                  class="w-6 h-6 rounded bg-[#211c19] text-white hover:bg-[#d4af37] hover:text-black flex items-center justify-center text-xs font-bold"
+                >
+                  +
+                </button>
+                <button
+                  type="button"
+                  (click)="removeCartItem(idx)"
+                  class="text-[#a89f91] hover:text-red-400 ml-1"
+                >
+                  <mat-icon class="text-base">delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          }
+          @empty {
+            <div class="py-16 text-center space-y-3 text-[#a89f91]">
+              <mat-icon class="text-5xl text-[#332b26]">shopping_basket</mat-icon>
+              <p class="text-sm">Your order is currently empty.</p>
+              <button
+                type="button"
+                (click)="toggleCartDrawer(); scrollToSection('menu')"
+                class="btn-gold px-6 py-2 rounded-full text-xs font-semibold uppercase tracking-wider"
+              >
+                Browse Menu
+              </button>
+            </div>
+          }
+        </div>
+
+        <!-- Drawer Footer -->
+        @if (cartItems().length > 0) {
+          <div class="pt-4 border-t border-[#332b26] space-y-4">
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-[#a89f91]">Total Items:</span>
+              <span class="text-white font-bold">{{ cartTotalCount() }}</span>
+            </div>
+            <div class="flex items-center justify-between text-base">
+              <span class="text-[#a89f91]">Estimated Total:</span>
+              <span class="text-[#d4af37] font-serif font-bold text-xl">
+                PKR {{ cartTotalPrice().toLocaleString() }}
+              </span>
+            </div>
+
+            <button
+              id="confirm-place-order-btn"
+              type="button"
+              (click)="placeDineInOrder()"
+              class="btn-gold w-full py-3.5 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-xl"
+            >
+              <mat-icon>check_circle</mat-icon>
+              Confirm Order (Dine-in / Takeaway)
+            </button>
+          </div>
+        }
+
+      </div>
+    </div>
+  }
+
+
+  <!-- ORDER SUCCESS TOAST NOTICE -->
+  @if (orderSuccessNotice()) {
+    <div
+      id="order-success-toast"
+      class="fixed bottom-24 right-6 z-50 max-w-md p-4 rounded-2xl bg-[#1e1916] border border-[#d4af37] shadow-2xl flex items-start gap-3 animate-fade-in"
+    >
+      <mat-icon class="text-[#d4af37] text-2xl mt-0.5">restaurant</mat-icon>
+      <div class="flex-grow space-y-1">
+        <h4 class="font-serif font-bold text-white text-sm">Order Dispatched to Kitchen!</h4>
+        <p class="text-xs text-[#dcd6cc] leading-relaxed">{{ orderSuccessNotice() }}</p>
+      </div>
+      <button type="button" (click)="dismissOrderNotice()" class="text-[#a89f91] hover:text-white">
+        <mat-icon class="text-base">close</mat-icon>
+      </button>
+    </div>
+  }
+
+
+  <!-- GALLERY LIGHTBOX MODAL -->
+  @if (activeGalleryItem()) {
+    @let gItem = activeGalleryItem()!;
+    <div
+      id="gallery-lightbox-modal"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-fade-in"
+    >
+      <div class="relative max-w-4xl w-full bg-[#14100e] rounded-3xl overflow-hidden border border-[#d4af37]/40 shadow-2xl">
+        
+        <!-- Close button -->
+        <button
+          id="close-lightbox-btn"
+          type="button"
+          (click)="closeLightbox()"
+          class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/70 text-white hover:bg-white hover:text-black flex items-center justify-center transition-colors cursor-pointer"
+        >
+          <mat-icon class="text-xl">close</mat-icon>
+        </button>
+
+        <!-- Image -->
+        <div class="h-[400px] sm:h-[500px] w-full bg-black flex items-center justify-center relative">
+          <img
+            [src]="gItem.imageUrl"
+            [alt]="gItem.title"
+            class="max-h-full max-w-full object-contain"
+            referrerpolicy="no-referrer"
+          />
+
+          <!-- Nav Arrows -->
+          <button
+            type="button"
+            (click)="navigateGallery(-1)"
+            class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 text-[#d4af37] hover:bg-white hover:text-black flex items-center justify-center transition-colors cursor-pointer"
+          >
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <button
+            type="button"
+            (click)="navigateGallery(1)"
+            class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 text-[#d4af37] hover:bg-white hover:text-black flex items-center justify-center transition-colors cursor-pointer"
+          >
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+
+        <!-- Caption -->
+        <div class="p-6 bg-[#171311] border-t border-[#332b26] flex items-center justify-between">
+          <div class="space-y-1">
+            <span class="text-xs text-[#d4af37] uppercase tracking-wider font-semibold">{{ gItem.category }}</span>
+            <h3 class="font-serif text-xl font-bold text-white">{{ gItem.title }}</h3>
+            <p class="text-xs text-[#a89f91]">{{ gItem.description }}</p>
+          </div>
+
+          <button
+            type="button"
+            (click)="scrollToSection('reservation'); closeLightbox()"
+            class="btn-gold px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider shrink-0 hidden sm:flex items-center gap-1.5"
+          >
+            <mat-icon class="text-sm">table_restaurant</mat-icon>
+            Book Table
+          </button>
+        </div>
+
+      </div>
+    </div>
+  }
+
+
+  <!-- DISCOVER MORE STORY MODAL -->
+  @if (storyModalOpen()) {
+    <div
+      id="story-modal"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fade-in"
+    >
+      <div class="bg-[#171311] rounded-3xl border border-[#d4af37]/40 max-w-2xl w-full p-8 max-h-[90vh] overflow-y-auto space-y-6 shadow-2xl relative">
+        <button
+          type="button"
+          (click)="closeStoryModal()"
+          class="absolute top-6 right-6 text-[#a89f91] hover:text-white"
+        >
+          <mat-icon class="text-2xl">close</mat-icon>
+        </button>
+
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-2 text-[#d4af37] text-xs uppercase tracking-widest font-semibold">
+            <mat-icon class="text-sm">history_edu</mat-icon>
+            The Journey of Turkish Restaurant
+          </div>
+          <h3 class="text-2xl sm:text-3xl font-serif font-bold text-white">
+            Honoring Ottoman Culinary Heritage
+          </h3>
+        </div>
+
+        <div class="space-y-4 text-xs sm:text-sm text-[#dcd6cc] leading-relaxed font-light">
+          <p>
+            Turkish cuisine is one of the world's most storied food cultures—celebrating harmony between Mediterranean freshness and Central Asian charcoal grilling traditions. In Nishatabad, Faisalabad, Turkish Restaurant was conceived to honor this legacy without compromise.
+          </p>
+          <p>
+            Our marinades begin with hand-crushed Urfa and Maraş peppers, roasted garlic, and pure Aegean cold-pressed olive oil. We cook exclusively over glowing oak wood and charcoal, providing each skewer with that unmistakable aromatic charred tenderness.
+          </p>
+          <div class="p-4 rounded-xl bg-[#14100e] border border-[#d4af37]/30 space-y-2">
+            <h4 class="font-serif font-bold text-white text-sm text-[#d4af37]">Our Quality Promise</h4>
+            <ul class="space-y-1.5 text-xs text-[#a89f91]">
+              <li>✓ 100% Certified Grass-Fed Halal Meats</li>
+              <li>✓ Hand-stretched dough baked fresh per order</li>
+              <li>✓ Natural clarified butter from traditional dairy farms</li>
+              <li>✓ Zero artificial food tenderizers or synthetic flavorings</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="pt-2 flex justify-end">
+          <button
+            type="button"
+            (click)="closeStoryModal(); scrollToSection('reservation')"
+            class="btn-gold px-8 py-3 rounded-full text-xs font-semibold uppercase tracking-wider cursor-pointer"
+          >
+            Experience It in Person
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

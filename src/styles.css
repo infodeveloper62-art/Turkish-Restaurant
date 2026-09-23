@@ -1,0 +1,73 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import "tailwindcss";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  h1, h2, h3, .font-serif {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+/* Custom button hover behavior requested: On button hover, change the button background to white and text to dark */
+.btn-gold {
+  background-color: #d4af37;
+  color: #0f0c0a;
+  border: 1px solid #d4af37;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-gold:hover {
+  background-color: #ffffff !important;
+  color: #0f0c0a !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 10px 25px -5px rgba(255, 255, 255, 0.2);
+}
+
+.btn-outline-gold {
+  background-color: transparent;
+  color: #f4efe6;
+  border: 1px solid #d4af37;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-outline-gold:hover {
+  background-color: #ffffff !important;
+  color: #0f0c0a !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 10px 25px -5px rgba(255, 255, 255, 0.2);
+}
+
+.btn-dark {
+  background-color: #1a1614;
+  color: #f4efe6;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-dark:hover {
+  background-color: #ffffff !important;
+  color: #0f0c0a !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 10px 25px -5px rgba(255, 255, 255, 0.2);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f0c0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #332b26;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d4af37;
+}
+

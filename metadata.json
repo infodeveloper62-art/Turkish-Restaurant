@@ -1,0 +1,6 @@
+{
+  "name": "Turkish Restaurant",
+  "description": "Experience authentic Turkish cuisine, sizzling charcoal kebabs, artisan pide, traditional mezze, and decadent baklava in Faisalabad.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
